@@ -20,7 +20,7 @@ export default function Perfil({ navigation }) {
       return <Text h4 style={{color: '#00FF7F',backgroundColor: '#E0EEEE', borderRadius: 5, paddingHorizontal: 10}}>
         {statusSaude}</Text>
     }
-    else if (situacao == 'Contaminado') {
+    else if (situacao == 'Quarentena') {
         return <Text h4 style={{color: '#FF6347', backgroundColor: '#FFC1C1', borderRadius: 5, paddingHorizontal: 10}}>
           {statusSaude}</Text>
     }
@@ -47,29 +47,30 @@ export default function Perfil({ navigation }) {
 
   useEffect(() => {
     async function Dados() {
+        let id = '-Mny6vhn-LMauBOXBlV7';
         // Olheiro da nossa database
-        firebase.database().ref('user/1/nome').once('value', (snapshot) => { 
+        firebase.database().ref('user/' + id + '/nome').once('value', (snapshot) => { 
           setNome(snapshot.val()); 
         });
-        firebase.database().ref('user/1/idade').once('value', (snapshot) => { 
+        firebase.database().ref('user/' + id + '/idade').once('value', (snapshot) => { 
           setIdade(snapshot.val()); 
         });
-        firebase.database().ref('user/1/temperatura-corporal').once('value', (snapshot) => { 
+        firebase.database().ref('user/' + id + '/temperatura-corporal').once('value', (snapshot) => { 
           setTemperaturaCorporal(snapshot.val()); 
         });
-        firebase.database().ref('user/1/periodo-com-dor-de-cabeca').once('value', (snapshot) => { 
+        firebase.database().ref('user/' + id + '/periodo-com-dor-de-cabeca').once('value', (snapshot) => { 
           setTempoDorCabeca(snapshot.val()); 
         });
-        firebase.database().ref('user/1/periodo-com-tosse').once('value', (snapshot) => { 
+        firebase.database().ref('user/' + id + '/periodo-com-tosse').once('value', (snapshot) => { 
           setPeriodoTosse(snapshot.val()); 
         });
-        firebase.database().ref('user/1/quantidade-de-visitas').once('value', (snapshot) => { 
+        firebase.database().ref('user/' + id + '/periodo-visitou-pais').once('value', (snapshot) => { 
           setQntVisitaAosPaises(snapshot.val()); 
         });
-        firebase.database().ref('user/1/status').once('value', (snapshot) => { 
+        firebase.database().ref('user/' + id + '/status-paciente').once('value', (snapshot) => { 
           setStatusSaude(snapshot.val()); 
         });
-        firebase.database().ref('user/1/pais-visitado').once('value', (snapshot) => { 
+        firebase.database().ref('user/' + id + '/pais-visitado').once('value', (snapshot) => { 
           setPaisVisitado(snapshot.val()); 
         });
      }
