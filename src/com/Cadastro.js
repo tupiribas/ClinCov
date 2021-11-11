@@ -3,6 +3,7 @@ import { StyleSheet, View, Button } from 'react-native';
 import { Input, Text, CheckBox } from 'react-native-elements';
 
 import firebase from '../Connection';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 export default class Cadastro extends Component {
 
@@ -17,11 +18,13 @@ export default class Cadastro extends Component {
         periodoVisitouPais: '',
         statusPaciente: 'Liberado',
         isValidacaoCadastro: false,
+        email: '',
+        senha: '',
     };
 
     // Cadastrar pessoa
     cadastro = async () => {
-        const { nome, idade, temperaturaCorporal, periodoComTosse, periodoComDorCabeca, periodoVisitouPais } = this.state;
+        const { nome, idade, temperaturaCorporal, periodoComTosse, periodoComDorCabeca, periodoVisitouPais, email, senha } = this.state;
 
         let keyDB = firebase.database().ref().child('user').push().key;
 
@@ -39,7 +42,25 @@ export default class Cadastro extends Component {
             const userPeriodoDorCabeca = await firebase.database()
                 .ref('user/' + keyDB + '/periodo-com-dor-de-cabeca').set(periodoComDorCabeca);
             const userPeriodoVisitouPais = await firebase.database()
-            .ref('user/' + keyDB + '/periodo-visitou-pais').set(periodoVisitouPais);
+                .ref('user/' + keyDB + '/periodo-visitou-pais').set(periodoVisitouPais);
+            
+            // Cadastrando um email e senha
+            const auth = getAuth();
+            createUserWithEmailAndPassword(auth, email, senha)
+                .then((userCredential) => {
+                    // Signed in
+                    const user = userCredential.user;
+
+                    console.log("Usuario: " + user);
+                    // ...
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    
+                    console.log(errorCode + "\n");
+                    console.log(errorMessage + "\n");
+                });
 
             // Valida a bandeira do pais
             if (this.state.isEstadosUnidos) {
@@ -69,9 +90,11 @@ export default class Cadastro extends Component {
             console.log(userPeriodoTosse + "\n");
             console.log(userPeriodoDorCabeca + "\n");
             console.log(userPeriodoVisitouPais + "\n");
+            console.log(userEmail + "\n");
+            console.log(userSenha + "\n");
         } 
         catch (erro) {
-            console.log("ERRO CODE.:001 >>>" + erro);
+            console.log("ERRO CODE.:002 >>>" + erro);
         }
     }
 
@@ -79,8 +102,12 @@ export default class Cadastro extends Component {
         return (
             <View style={styles.container}>
 
-                <Text h1 style={{color: '#00FF7F'}}>Informe seus dados</Text>
-                <View style={styles.container}>
+                <View style={styles.formulario}>
+
+                    <View style={{display: 'flex', alignItems: 'center', paddingTop: 180, height: 'auto'}}>
+                    <Text style={{color: '#00FF7F', 
+                            fontSize: 30}}>Informe seus dados</Text>
+                    </View>
                     <Input
                         value={this.state.nome}
                         placeholder="Nome"
@@ -111,9 +138,12 @@ export default class Cadastro extends Component {
                         onChangeText={periodoComDorCabeca => this.setState({ periodoComDorCabeca })}
                     />
 
-                    <Text h4 style={{color: '#00FF7F'}}><br/>Se visitou e há quantas semanas os seguintes países: 
-                        <br/>Itália, China, Indonésia, Portugal e Eua
-                    </Text>
+                    <View style={{display: 'flex', alignItems: 'center', margin: 10, height: 'auto'}}>
+                        <Text style={{color: '#00FF7F', fontSize: 20}}>
+                            <br/>Se visitou e há quantas semanas os seguintes países: 
+                            <br/>Itália, China, Indonésia, Portugal e Eua
+                        </Text>
+                    </View>
 
                     <View style={styles.paisesVisitados}>
                         <CheckBox
@@ -126,6 +156,7 @@ export default class Cadastro extends Component {
                             onPress={() => {
                                 if (!this.state.isEstadosUnidos) {
                                 this.setState({isEstadosUnidos:true});
+                                this.setState({isItalia:false});
                                 } 
                                 else {this.setState({isEstadosUnidos:false})}
                             }}
@@ -140,6 +171,7 @@ export default class Cadastro extends Component {
                             onPress={() => {
                                 if (!this.state.isItalia) {
                                 this.setState({isItalia:true});
+                                this.setState({isEstadosUnidos:false});
                                 } 
                                 else {this.setState({isItalia:false})}
                             }}
@@ -151,6 +183,18 @@ export default class Cadastro extends Component {
                         placeholder="Quantidade de semanas"
                         onChangeText={periodoVisitouPais => this.setState({ periodoVisitouPais })}
                     />
+
+                    <Input
+                        value={this.state.email}
+                        placeholder="E-mail"
+                        onChangeText={email => this.setState({ email })}
+                    />  
+                    
+                    <Input
+                        value={this.state.senha}
+                        placeholder="Senha"
+                        onChangeText={senha => this.setState({ senha })}
+                    />
                     
                     {/*Mensagem de validação*/ 
                         this.state.isValidacaoCadastro ? 
@@ -159,7 +203,7 @@ export default class Cadastro extends Component {
                     }
                 </View>
 
-                <View style={{margin: 20}}> 
+                <View style={{padding: 20}}> 
                     <Button title="Cadastrar" onPress={this.cadastro}/>
                 </View>
             </View>
@@ -169,12 +213,17 @@ export default class Cadastro extends Component {
 
 const styles = StyleSheet.create({
     container: {
+        display: 'flex',
         flex: 1, 
         alignItems: 'center', 
         justifyContent: 'center',
+        flexDirection: 'column'
     },
     paisesVisitados: {
 
+    },
+    formulario: {
+        display: 'flex',
     }
 
 });
