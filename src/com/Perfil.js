@@ -1,8 +1,10 @@
 import React, { useEffect, useState} from 'react';
 import { render } from 'react-dom';
-import { StyleSheet, View, Button, Image, Pressable, Modal, Alert } from 'react-native';
+import { StyleSheet, SafeAreaView, View, Button, Image, Pressable, Modal, Alert } from 'react-native';
 import { Input, Text, CheckBox } from 'react-native-elements';
+import QRCode from 'react-native-qrcode-svg';
 
+import firestore from '@react-native-firebase/firestore';
 import firebase from '../../src/Connection';
 
 export default function Perfil() {
@@ -23,6 +25,11 @@ export default function Perfil() {
 
   // Modal 
   const [modalEditarDados, setModalEditarDados] = useState(false);
+  const [modalQRCode, setModalQRCode] = useState(false);
+
+  // QR Code
+  const [inputText, setInputText] = useState('');
+  const [qrValue, setQrValue] = useState('');
 
   // Mudar a estilização do status do usuário (Quarentena ou Liberado)
   function status(situacao) {
@@ -59,7 +66,7 @@ export default function Perfil() {
   // Observar os dados do usuário
   useEffect(() => {
     async function Dados() {
-        let id = '-MoBWTs6vhhJ-JY3Md50';
+        let id = '-MoTLf8tge6Qy2BN-g_C';
         // Olheiro da nossa database
         firebase.database().ref('user/' + id + '/nome').once('value', (snapshot) => { 
           setNome(snapshot.val()); 
@@ -273,7 +280,6 @@ export default function Perfil() {
                 />
 
                 <Text><br/>Se visitou e há quantas semanas os seguintes países: 
-                    <br/>Itália, China, Indonésia, Portugal e Eua
                 </Text>
 
                 <View style={styles.paisesVisitados}>
@@ -352,6 +358,60 @@ export default function Perfil() {
     </View>
     {/*Fim do Modal - Editar Dados*/}
 
+      {/*Modal - QRcode*/}
+      <View style={styles.modalQR_Code}>
+          <View style={styles.centeredView}>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalQRCode}
+            onRequestClose={() => {
+              setModalQRCode(!modalVisible);
+            }}
+          >
+
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text h4 style={styles.modalText}>Informações de {nome}</Text>
+                
+                <SafeAreaView style={{flex: 1}}>
+                  <View style={styles.containerQr}>
+                    <QRCode
+                      value={qrValue ? qrValue : 'NA'}
+                      size={250}
+                      color="#00FF7F"
+                      backgroundColor="white"
+                      logoSize={30}
+                      logoMargin={2}
+                      logoBorderRadius={15}
+                      logoBackgroundColor="yellow"
+                    />
+                  </View>
+                </SafeAreaView>
+
+                {/*Botão de saida do qr code*/}
+                <View style={{flexDirection: 'row'}}>
+                  <Pressable
+                    style={[styles.button, styles.buttonOpen]}
+                    onPress={() => {setModalQRCode(!modalQRCode);}}
+                  >
+                    <Text style={styles.textStyle}>Voltar</Text>
+                  </Pressable>  
+                </View>
+                {/*Botão saida do qr code*/}
+              </View>
+            </View>
+          </Modal>
+          <Pressable
+            style={[styles.button, styles.buttonOpen]}
+            onPress={() => setModalQRCode(true)}
+          >
+            <Text style={styles.textStyle}>QR Code</Text>
+          </Pressable>
+          
+        </View>
+      </View>
+      {/*Fim do Modal - QRcode*/}
     </View>
   );
 
@@ -382,14 +442,16 @@ const styles = StyleSheet.create({
     margin: 15,
   },
   informacoesPerfil: {
-    paddingTop:50,
+    paddingTop: 120,
   },
   fotoPerfil: {
+    display: 'flex',
     borderRadius: 100,
     borderColor: '#00FF7F',
     borderTopWidth: 1,
     borderLeftWidth: 5,
     borderWidth: 10,
+    alignItems: 'center',
     width: 200,
     height: 200,
   },
@@ -423,6 +485,18 @@ const styles = StyleSheet.create({
     // Possíveis edições
 
 
+  },
+   // modal QR CODE
+   modalQR_Code: {
+    // Possíveis edições
+
+
+  },
+  containerQr: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
   },
   containerModal: {
     display: 'flex',

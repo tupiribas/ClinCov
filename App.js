@@ -6,6 +6,7 @@ import Home from './src/com/Home';
 import Cadastro from './src/com/Cadastro';
 import Perfil from './src/com/Perfil';
 import Login from './src/com/Login';
+import BuscarPaciente from './src/com/adm/BuscarPaciente';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +18,7 @@ function App(/*Navegador */) {
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Cadastro" component={Cadastro} />
         <Stack.Screen name="Perfil" component={Perfil} />
+        <Stack.Screen name="Buscar Paciente - QR" component={BuscarPaciente} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Button, View } from 'react-native';
 import { Text } from 'react-native-elements';
 
@@ -14,8 +14,8 @@ function Home({ navigation }) {
       <View style={{
           alignItems: 'center', 
           justifyContent: 'center', 
-          margin: 10,
-          flexDirection: 'row'}}>
+          marginTop: 10,
+          flexDirection: 'colunm'}}>
         <Button
           title="Cadastro"
           onPress={() => navigation.navigate('Cadastro')}
@@ -23,13 +23,24 @@ function Home({ navigation }) {
         <View style={{
           alignItems: 'center', 
           justifyContent: 'center', 
-          margin: 30,
+          marginTop: 10,
           flexDirection: 'row'}}>
-        <Button
-          title="Perfil"
-          onPress={() => navigation.navigate('Perfil')}
-        />
-      </View>
+          <Button
+            title="Perfil"
+            onPress={() => navigation.navigate('Perfil')}
+          />
+        </View>
+
+        <View style={{
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          marginTop: 10,
+          flexDirection: 'row'}}>
+          <Button
+            title="Buscar Paciente QR"
+            onPress={() => navigation.navigate('Buscar Paciente - QR')}
+          />
+        </View>
       </View>
     </View>
   );

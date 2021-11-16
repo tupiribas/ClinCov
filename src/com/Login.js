@@ -3,7 +3,6 @@ import { StyleSheet, View, Button } from 'react-native';
 import { Input, Text } from 'react-native-elements';
 
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import firebase from '../Connection';
 
 function Login({ navigation }) {
 
@@ -68,6 +67,7 @@ function Login({ navigation }) {
                 <Button title="Entrar" onPress={() => {login(); 
                     if (isValidacaoLogin) {
                         setMensagemValidacao("Tudo certo, aproveite!");
+                        navigation.navigate('Home');
                     }
                 }
 
@@ -84,9 +84,6 @@ const styles = StyleSheet.create({
         alignItems: 'center', 
         justifyContent: 'center',
         flexDirection: 'column'
-    },
-    paisesVisitados: {
-
     },
     formulario: {
         display: 'flex',

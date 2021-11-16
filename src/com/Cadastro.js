@@ -19,12 +19,13 @@ export default class Cadastro extends Component {
         statusPaciente: 'Liberado',
         isValidacaoCadastro: false,
         email: '',
+        numeroTelefoneSeguro: '71'+'',
         senha: '',
     };
 
     // Cadastrar pessoa
     cadastro = async () => {
-        const { nome, idade, temperaturaCorporal, periodoComTosse, periodoComDorCabeca, periodoVisitouPais, email, senha } = this.state;
+        const { nome, idade, temperaturaCorporal, periodoComTosse, periodoComDorCabeca, periodoVisitouPais, numeroTelefoneSeguro, email, senha } = this.state;
 
         let keyDB = firebase.database().ref().child('user').push().key;
 
@@ -43,6 +44,8 @@ export default class Cadastro extends Component {
                 .ref('user/' + keyDB + '/periodo-com-dor-de-cabeca').set(periodoComDorCabeca);
             const userPeriodoVisitouPais = await firebase.database()
                 .ref('user/' + keyDB + '/periodo-visitou-pais').set(periodoVisitouPais);
+            const userNumeroTelefoneSeguro = await firebase.database()
+                .ref('user/' + keyDB + '/numero-telefone-seguro').set(numeroTelefoneSeguro);
             
             // Cadastrando um email e senha
             const auth = getAuth();
@@ -90,6 +93,7 @@ export default class Cadastro extends Component {
             console.log(userPeriodoTosse + "\n");
             console.log(userPeriodoDorCabeca + "\n");
             console.log(userPeriodoVisitouPais + "\n");
+            console.log(userNumeroTelefoneSeguro);
             console.log(userEmail + "\n");
             console.log(userSenha + "\n");
         } 
@@ -195,6 +199,12 @@ export default class Cadastro extends Component {
                         placeholder="Senha"
                         onChangeText={senha => this.setState({ senha })}
                     />
+
+                    <Input
+                        value={this.state.numeroTelefoneSeguro}
+                        placeholder="Número de celular de confiança"
+                        onChangeText={numeroTelefoneSeguro => this.setState({ numeroTelefoneSeguro })}
+                    />
                     
                     {/*Mensagem de validação*/ 
                         this.state.isValidacaoCadastro ? 
@@ -204,7 +214,7 @@ export default class Cadastro extends Component {
                 </View>
 
                 <View style={{padding: 20}}> 
-                    <Button title="Cadastrar" onPress={this.cadastro}/>
+                    <Button title="Cadastrar" onPress={() => {this.cadastro}}/>
                 </View>
             </View>
         );
