@@ -11,9 +11,11 @@ import BuscarPaciente from './src/com/adm/BuscarPaciente';
 const Stack = createNativeStackNavigator();
 
 function App(/*Navegador */) {
+// Foi colocado o initialRouteName="Home", caso tivesse algum problema com o firebase que ele não quisesse autenticar no Login
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Cadastro" component={Cadastro} />

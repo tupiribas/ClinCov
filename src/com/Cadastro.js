@@ -108,7 +108,7 @@ export default class Cadastro extends Component {
 
                 <View style={styles.formulario}>
 
-                    <View style={{display: 'flex', alignItems: 'center', paddingTop: 180, height: 'auto'}}>
+                    <View style={{display: 'flex', alignItems: 'center', paddingTop: 200, height: 'auto'}}>
                     <Text style={{color: '#00FF7F', 
                             fontSize: 30}}>Informe seus dados</Text>
                     </View>
@@ -214,7 +214,7 @@ export default class Cadastro extends Component {
                 </View>
 
                 <View style={{padding: 20}}> 
-                    <Button title="Cadastrar" onPress={() => {this.cadastro}}/>
+                    <Button title="Cadastrar" onPress={this.cadastro}/>
                 </View>
             </View>
         );

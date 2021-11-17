@@ -28,8 +28,8 @@ export default function Perfil() {
   const [modalQRCode, setModalQRCode] = useState(false);
 
   // QR Code
-  const [inputText, setInputText] = useState('');
-  const [qrValue, setQrValue] = useState('');
+  const [capturarTexto, setCapturarTexto] = useState('');
+  const [qrValor, setQrValor] = useState('');
 
   // Mudar a estilização do status do usuário (Quarentena ou Liberado)
   function status(situacao) {
@@ -66,7 +66,7 @@ export default function Perfil() {
   // Observar os dados do usuário
   useEffect(() => {
     async function Dados() {
-        let id = '-MoTLf8tge6Qy2BN-g_C';
+        let id = '-ModF-QA-9JMzTAt2jhi';
         // Olheiro da nossa database
         firebase.database().ref('user/' + id + '/nome').once('value', (snapshot) => { 
           setNome(snapshot.val()); 
@@ -120,7 +120,7 @@ export default function Perfil() {
       let userStatusPaciente = null;
       let userPaisVisitado = null;
 
-      let keyDB = '-MoBWTs6vhhJ-JY3Md50';
+      let keyDB = '-ModF-QA-9JMzTAt2jhi';
       const userName = await firebase.database()
           .ref('user/' + keyDB + '/nome').set(nome);
       const userIdade = await firebase.database()
@@ -377,7 +377,7 @@ export default function Perfil() {
                 <SafeAreaView style={{flex: 1}}>
                   <View style={styles.containerQr}>
                     <QRCode
-                      value={qrValue ? qrValue : 'NA'}
+                      value={qrValor ? qrValor : 'NA'}
                       size={250}
                       color="#00FF7F"
                       backgroundColor="white"
